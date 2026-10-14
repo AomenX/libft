@@ -6,11 +6,9 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/14 23:50:48 by ammomen           #+#    #+#             */
-/*   Updated: 2026/10/14 23:50:50 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/15 00:46:32 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 int	ft_isalpha(int c)
 {

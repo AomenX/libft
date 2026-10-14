@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/14 20:33:53 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/15 00:00:48 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/15 00:46:51 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,4 +15,5 @@
 
 int	ft_isalpha(int c);
 int	ft_isdigit(int c);
+int	ft_isalnum(int c);
 #endif
