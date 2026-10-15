@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/15 11:48:43 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/15 12:07:20 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/15 12:35:07 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,13 @@ int	main(void)
 	printf("newline: %d\n", ft_isprint('\n'));
 	printf("tab: %d\n", ft_isprint('\t'));
 	printf("\n");
+
+	// tests fot ft_toupper
+	printf("tests for ft_toupper -->\n");
+	printf("a --> %c\n", ft_toupper('a'));
+	printf("b --> %c\n", ft_toupper('b'));
+	printf("z --> %c\n", ft_toupper('z'));
+	printf("Z --> %c\n", ft_toupper('Z'));
+	printf("{ --> %c\n", ft_toupper('{'));
+	printf("! --> %c\n", ft_toupper('!'));
 }
