@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/15 11:48:43 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/15 13:42:39 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/15 15:04:26 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,3 @@ int	main(void)
 	printf("Hello\\0world --> %zu\n", ft_strlen("Hello\0world"));
 	printf("\n");
 }
-
