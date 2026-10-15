@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/15 11:48:43 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/15 11:56:21 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/15 12:07:20 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,14 @@ int	main(void)
 	printf("127: %d\n", ft_isascii(127));
 	printf("-1: %d\n", ft_isascii(-1));
 	printf("128: %d\n", ft_isascii(128));
+	printf("\n");
+
+	// tests for ft_isprint
+	printf("tests for ft_isprint -->\n");
+	printf("space: %d\n", ft_isprint(' '));
+	printf("a: %d\n", ft_isprint('a'));
+	printf("@: %d\n", ft_isprint('@'));
+	printf("newline: %d\n", ft_isprint('\n'));
+	printf("tab: %d\n", ft_isprint('\t'));
 	printf("\n");
 }
