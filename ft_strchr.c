@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/15 15:10:43 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/16 19:22:20 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/16 22:17:39 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	unsigned int	i;
+	size_t	i;
 
 	i = 0;
 	while (s[i])
