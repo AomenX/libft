@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/14 20:33:53 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/15 13:30:10 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/15 15:08:36 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ int		ft_toupper(int c);
 int		ft_tolower(int c);
 
 size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
 #endif
