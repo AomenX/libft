@@ -6,13 +6,14 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/17 15:20:16 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/17 18:31:33 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "libft.h"
 #include <stdio.h>
+#include <string.h>
 
 static int	g_passed = 0;
 static int	g_failed = 0;
@@ -227,6 +228,37 @@ static void	test_strncmp(void)
 	check_int("Empty strings", ft_strncmp("", "", 5), 0);
 }
 
+static void	test_strlcpy(void)
+{
+	char	dst1[10];
+	char	dst2[4];
+	char	dst3[1];
+	char	dst4[5] = "ABCD";
+	char	dst5[5];
+
+	section("ft_strlcpy");
+
+	check_size("Normal copy return",
+		ft_strlcpy(dst1, "Hello", sizeof(dst1)), 5);
+	check_int("Normal copy content", strcmp(dst1, "Hello"), 0);
+
+	check_size("Truncated copy return",
+		ft_strlcpy(dst2, "Hello", sizeof(dst2)), 5);
+	check_int("Truncated copy content", strcmp(dst2, "Hel"), 0);
+
+	check_size("Size 1 return",
+		ft_strlcpy(dst3, "Hello", sizeof(dst3)), 5);
+	check_int("Size 1 produces empty string", dst3[0], '\0');
+
+	check_size("Size 0 return",
+		ft_strlcpy(dst4, "Hello", 0), 5);
+	check_int("Size 0 leaves buffer unchanged", strcmp(dst4, "ABCD"), 0);
+
+	check_size("Empty source return",
+		ft_strlcpy(dst5, "", sizeof(dst5)), 0);
+	check_int("Empty source content", dst5[0], '\0');
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -244,6 +276,7 @@ int	main(void)
 	test_strchr();
 	test_strrchr();
 	test_strncmp();
+	test_strlcpy();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
