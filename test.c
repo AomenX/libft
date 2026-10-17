@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/17 18:31:33 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/17 21:30:19 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,43 @@ static void	test_strlcpy(void)
 	check_int("Empty source content", dst5[0], '\0');
 }
 
+static void	test_strlcat(void)
+{
+	char	dst1[8] = "Hi";
+	char	dst2[5] = "Hi";
+	char	dst3[10] = "Hello";
+	char	dst4[5] = "";
+	char	dst5[10] = "Hi";
+	char	dst6[5] = "Hi";
+
+	section("ft_strlcat");
+
+	check_size("Enough space",
+		ft_strlcat(dst1, "1337", 8), 6);
+	check_int("Enough space content", strcmp(dst1, "Hi1337"), 0);
+
+	check_size("Truncation",
+		ft_strlcat(dst2, "1337", 5), 6);
+	check_int("Truncation content", strcmp(dst2, "Hi13"), 0);
+
+	check_size("Size smaller than destination",
+		ft_strlcat(dst3, "1337", 2), 6);
+	check_int("Destination unchanged", strcmp(dst3, "Hello"), 0);
+
+	check_size("Empty destination",
+		ft_strlcat(dst4, "abc", 5), 3);
+	check_int("Empty destination content", strcmp(dst4, "abc"), 0);
+
+	check_size("Empty source",
+		ft_strlcat(dst5, "", 10), 2);
+	check_int("Empty source content", strcmp(dst5, "Hi"), 0);
+
+	check_size("Zero size",
+		ft_strlcat(dst6, "abc", 0), 3);
+	check_int("Zero size leaves destination unchanged",
+		strcmp(dst6, "Hi"), 0);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -277,6 +314,7 @@ int	main(void)
 	test_strrchr();
 	test_strncmp();
 	test_strlcpy();
+	test_strlcat();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
