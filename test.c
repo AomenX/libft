@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/16 22:07:40 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/17 15:20:16 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,19 @@ static void	test_strrchr(void)
 		ft_strrchr(str, -1), NULL);
 }
 
+static void	test_strncmp(void)
+{
+	section("ft_strncmp");
+	check_int("Equal strings", ft_strncmp("abc", "abc", 3), 0);
+	check_int("First smaller", ft_strncmp("abc", "abd", 3), -1);
+	check_int("First greater", ft_strncmp("abd", "abc", 3), 1);
+	check_int("Limited comparison", ft_strncmp("abc", "abd", 2), 0);
+	check_int("First shorter", ft_strncmp("abc", "abcd", 4), -100);
+	check_int("First longer", ft_strncmp("abcd", "abc", 4), 100);
+	check_int("Zero length", ft_strncmp("abc", "xyz", 0), 0);
+	check_int("Empty strings", ft_strncmp("", "", 5), 0);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -230,6 +243,7 @@ int	main(void)
 	test_strlen();
 	test_strchr();
 	test_strrchr();
+	test_strncmp();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
