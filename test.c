@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/19 15:24:40 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/19 15:43:28 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,26 @@ static void	test_bzero(void)
 		strcmp(unchanged, "Hello"), 0);
 }
 
+static void	test_memcpy(void)
+{
+	char	src[] = {'A', '\0', 'B', 'C'};
+	char	dst[4] = {0};
+	char	unchanged[] = "Hello";
+
+	section("ft_memcpy");
+
+	check_ptr("Returns destination",
+		ft_memcpy(dst, src, 4), dst);
+	check_int("First byte", dst[0], 'A');
+	check_int("Embedded null byte", dst[1], '\0');
+	check_int("Third byte", dst[2], 'B');
+	check_int("Fourth byte", dst[3], 'C');
+
+	ft_memcpy(unchanged, "XXXXX", 0);
+	check_int("Zero bytes leaves buffer unchanged",
+		strcmp(unchanged, "Hello"), 0);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -397,6 +417,7 @@ int	main(void)
 	test_strnstr();
 	test_memset();
 	test_bzero();
+	test_memcpy();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
