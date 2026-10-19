@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/19 12:13:26 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/19 15:24:40 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,6 +358,23 @@ static void	test_memset(void)
 	check_int("Remaining byte unchanged", bytes[2], 3);
 }
 
+static void	test_bzero(void)
+{
+	char	str[] = "Hello";
+	char	unchanged[] = "Hello";
+
+	section("ft_bzero");
+
+	ft_bzero(str, 2);
+	check_int("First byte zero", str[0], '\0');
+	check_int("Second byte zero", str[1], '\0');
+	check_int("Third byte unchanged", str[2], 'l');
+
+	ft_bzero(unchanged, 0);
+	check_int("Zero size leaves buffer unchanged",
+		strcmp(unchanged, "Hello"), 0);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -379,6 +396,7 @@ int	main(void)
 	test_strlcat();
 	test_strnstr();
 	test_memset();
+	test_bzero();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
