@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/17 21:30:19 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/19 01:03:43 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,6 +296,38 @@ static void	test_strlcat(void)
 		strcmp(dst6, "Hi"), 0);
 }
 
+static void	test_strnstr(void)
+{
+	char	big[] = "Hello World";
+	char	banana[] = "banana";
+	char	empty[] = "";
+
+	section("ft_strnstr");
+
+	check_ptr("Substring found",
+		ft_strnstr(big, "World", 11), &big[6]);
+	check_ptr("Substring outside limit",
+		ft_strnstr(big, "World", 10), NULL);
+	check_ptr("First occurrence",
+		ft_strnstr(banana, "ana", 6), &banana[1]);
+	check_ptr("Substring not found",
+		ft_strnstr(big, "xyz", 11), NULL);
+	check_ptr("Empty needle",
+		ft_strnstr(big, "", 11), big);
+	check_ptr("Empty needle with zero limit",
+		ft_strnstr(big, "", 0), big);
+	check_ptr("Zero search limit",
+		ft_strnstr(big, "H", 0), NULL);
+	check_ptr("Exact limit",
+		ft_strnstr(big, "Hello", 5), big);
+	check_ptr("Match exceeds limit",
+		ft_strnstr(big, "Hello", 4), NULL);
+	check_ptr("Empty haystack",
+		ft_strnstr(empty, "a", 5), NULL);
+	check_ptr("Both strings empty",
+		ft_strnstr(empty, "", 0), empty);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -315,6 +347,7 @@ int	main(void)
 	test_strncmp();
 	test_strlcpy();
 	test_strlcat();
+	test_strnstr();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
