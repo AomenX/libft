@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/19 01:03:43 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/19 12:13:26 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,6 +328,36 @@ static void	test_strnstr(void)
 		ft_strnstr(empty, "", 0), empty);
 }
 
+static void	test_memset(void)
+{
+	char			str[6] = "Hello";
+	char			zero[6] = "Hello";
+	char			full[6] = "Hello";
+	unsigned char	bytes[4] = {1, 2, 3, 4};
+
+	section("ft_memset");
+
+	check_ptr("Returns original pointer",
+		ft_memset(str, 'X', 3), str);
+	check_int("First byte", str[0], 'X');
+	check_int("Second byte", str[1], 'X');
+	check_int("Third byte", str[2], 'X');
+	check_int("Unmodified fourth byte", str[3], 'l');
+	check_int("Null terminator preserved", str[5], '\0');
+
+	ft_memset(zero, 'X', 0);
+	check_int("Zero length leaves data unchanged",
+		strcmp(zero, "Hello"), 0);
+
+	ft_memset(full, 'A', sizeof(full));
+	check_int("Entire buffer filled", full[5], 'A');
+
+	ft_memset(bytes, 256 + 65, 2);
+	check_int("Integer converted to unsigned char", bytes[0], 65);
+	check_int("Second byte converted", bytes[1], 65);
+	check_int("Remaining byte unchanged", bytes[2], 3);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -348,6 +378,7 @@ int	main(void)
 	test_strlcpy();
 	test_strlcat();
 	test_strnstr();
+	test_memset();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
