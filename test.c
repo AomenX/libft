@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 14:14:31 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 17:16:35 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -449,6 +449,22 @@ static void	test_memchr(void)
 	check_ptr("Integer conversion", ft_memchr(str, 328, 5), &str[0]);
 }
 
+static void	test_memcmp(void)
+{
+	char	a[] = {'A', '\0', 'B'};
+	char	b[] = {'A', '\0', 'C'};
+	unsigned char	high[] = {255};
+	unsigned char	low[] = {1};
+
+	section("ft_memcmp");
+	check_int("Equal first two bytes", ft_memcmp(a, b, 2), 0);
+	check_int("Different third byte", ft_memcmp(a, b, 3), -1);
+	check_int("Reverse comparison", ft_memcmp(b, a, 3), 1);
+	check_int("Equal buffers", ft_memcmp(a, a, 3), 0);
+	check_int("Zero length", ft_memcmp(a, b, 0), 0);
+	check_int("Unsigned comparison", ft_memcmp(high, low, 1), 254);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -469,11 +485,12 @@ int	main(void)
 	test_strlcpy();
 	test_strlcat();
 	test_strnstr();
-	test_memset();
 	test_bzero();
+	test_memset();
 	test_memcpy();
 	test_memmove();
 	test_memchr();
+	test_memcmp();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
