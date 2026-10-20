@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 13:51:15 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 14:14:31 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,6 +433,22 @@ static void	test_memmove(void)
 	check_int("Embedded null, third byte", bytes[3], 'B');
 }
 
+static void	test_memchr(void)
+{
+	char	data[] = {'A', 'B', '\0', 'C', 'D'};
+	char	str[] = "Hello";
+
+	section("ft_memchr");
+	check_ptr("First byte", ft_memchr(str, 'H', 5), &str[0]);
+	check_ptr("Middle byte", ft_memchr(str, 'l', 5), &str[2]);
+	check_ptr("Missing byte", ft_memchr(str, 'z', 5), NULL);
+	check_ptr("Zero length", ft_memchr(str, 'H', 0), NULL);
+	check_ptr("Find null byte", ft_memchr(data, '\0', 5), &data[2]);
+	check_ptr("Search after null", ft_memchr(data, 'C', 5), &data[3]);
+	check_ptr("Respect limit", ft_memchr(data, 'C', 3), NULL);
+	check_ptr("Integer conversion", ft_memchr(str, 328, 5), &str[0]);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -457,6 +473,7 @@ int	main(void)
 	test_bzero();
 	test_memcpy();
 	test_memmove();
+	test_memchr();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
