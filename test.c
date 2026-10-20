@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 17:16:35 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 17:44:54 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -465,6 +465,37 @@ static void	test_memcmp(void)
 	check_int("Unsigned comparison", ft_memcmp(high, low, 1), 254);
 }
 
+static void	test_atoi(void)
+{
+	section("ft_atoi");
+
+	check_int("Positive number", ft_atoi("42"), 42);
+	check_int("Negative number", ft_atoi("-42"), -42);
+	check_int("Explicit plus", ft_atoi("+42"), 42);
+	check_int("Zero", ft_atoi("0"), 0);
+	check_int("Negative zero", ft_atoi("-0"), 0);
+
+	check_int("Leading spaces", ft_atoi("   123"), 123);
+	check_int("Leading whitespace", ft_atoi(" \t\n\r\v\f-123"), -123);
+	check_int("Leading zeros", ft_atoi("00042"), 42);
+	check_int("Spaces and zeros", ft_atoi("  -0012"), -12);
+
+	check_int("Trailing letters", ft_atoi("123abc"), 123);
+	check_int("Trailing spaces", ft_atoi("42   "), 42);
+	check_int("Letters first", ft_atoi("abc123"), 0);
+	check_int("Empty string", ft_atoi(""), 0);
+	check_int("Only spaces", ft_atoi("   "), 0);
+
+	check_int("Double minus", ft_atoi("--42"), 0);
+	check_int("Double plus", ft_atoi("++42"), 0);
+	check_int("Plus minus", ft_atoi("+-42"), 0);
+	check_int("Minus plus", ft_atoi("-+42"), 0);
+	check_int("Sign only", ft_atoi("-"), 0);
+
+	check_int("INT_MAX", ft_atoi("2147483647"), 2147483647);
+	check_int("INT_MIN", ft_atoi("-2147483648"), (-2147483647 - 1));
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -491,6 +522,7 @@ int	main(void)
 	test_memmove();
 	test_memchr();
 	test_memcmp();
+	test_atoi();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
