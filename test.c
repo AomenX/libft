@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 17:50:11 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 21:26:45 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 static int	g_passed = 0;
 static int	g_failed = 0;
@@ -496,6 +497,37 @@ static void	test_atoi(void)
 	check_int("INT_MIN", ft_atoi("-2147483648"), (-2147483648));
 }
 
+
+static void	test_calloc(void)
+{
+	unsigned char	*p;
+	size_t			i;
+	int				all_zero;
+	void			*zero_ptr;
+
+	section("ft_calloc");
+	p = ft_calloc(10, sizeof(unsigned char));
+	check_int("Allocation succeeds", p != NULL, 1);
+	if (p != NULL)
+	{
+		all_zero = 1;
+		i = 0;
+		while (i < 10)
+		{
+			if (p[i] != 0)
+				all_zero = 0;
+			i++;
+		}
+		check_int("All bytes initialized to zero", all_zero, 1);
+		free(p);
+	}
+	check_ptr("Multiplication overflow",
+		ft_calloc((size_t)-1, 2), NULL);
+	zero_ptr = ft_calloc(0, 10);
+	free(zero_ptr);
+	check_int("Zero count handled safely", 1, 1);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -523,6 +555,7 @@ int	main(void)
 	test_memchr();
 	test_memcmp();
 	test_atoi();
+	test_calloc();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
