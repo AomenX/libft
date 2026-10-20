@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 21:45:09 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 22:37:59 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -528,6 +528,39 @@ static void	test_calloc(void)
 	check_int("Zero count handled safely", 1, 1);
 }
 
+static void	test_strdup(void)
+{
+	char	*copy;
+	char	*empty;
+	char	original[] = "Hello";
+	char	*independent;
+
+	section("ft_strdup");
+	copy = ft_strdup("1337 School");
+	check_int("Allocation succeeds", copy != NULL, 1);
+	if (copy)
+	{
+		check_int("Correct content", strcmp(copy, "1337 School"), 0);
+		free(copy);
+	}
+	empty = ft_strdup("");
+	check_int("Empty string allocation", empty != NULL, 1);
+	if (empty)
+	{
+		check_int("Empty string content", strcmp(empty, ""), 0);
+		free(empty);
+	}
+	independent = ft_strdup(original);
+	check_int("Independent allocation", independent != original, 1);
+	if (independent)
+	{
+		original[0] = 'X';
+		check_int("Original modification does not affect copy",
+			strcmp(independent, "Hello"), 0);
+		free(independent);
+	}
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -556,7 +589,8 @@ int	main(void)
 	test_memcmp();
 	test_atoi();
 	test_calloc();
-
+	test_strdup();
+	
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
 	printf("====================================\n");
