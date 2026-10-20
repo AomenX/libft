@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 17:44:54 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 17:50:11 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -493,7 +493,7 @@ static void	test_atoi(void)
 	check_int("Sign only", ft_atoi("-"), 0);
 
 	check_int("INT_MAX", ft_atoi("2147483647"), 2147483647);
-	check_int("INT_MIN", ft_atoi("-2147483648"), (-2147483647 - 1));
+	check_int("INT_MIN", ft_atoi("-2147483648"), (-2147483648));
 }
 
 int	main(void)
