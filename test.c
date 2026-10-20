@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/19 15:43:28 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/20 13:51:15 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,6 +395,44 @@ static void	test_memcpy(void)
 		strcmp(unchanged, "Hello"), 0);
 }
 
+
+static void	test_memmove(void)
+{
+	char	right[] = "ABCDE";
+	char	left[] = "ABCDE";
+	char	normal[6] = {0};
+	char	unchanged[] = "Hello";
+	char	bytes[] = {'A', '\0', 'B', 'C'};
+
+	section("ft_memmove");
+
+	check_ptr("Returns destination",
+		ft_memmove(normal, "Hello", 6), normal);
+	check_int("Non-overlapping copy",
+		strcmp(normal, "Hello"), 0);
+
+	ft_memmove(right + 1, right, 4);
+	check_int("Overlap to the right",
+		strcmp(right, "AABCD"), 0);
+
+	ft_memmove(left, left + 1, 4);
+	check_int("Overlap to the left",
+		strcmp(left, "BCDEE"), 0);
+
+	ft_memmove(unchanged, unchanged, 5);
+	check_int("Source equals destination",
+		strcmp(unchanged, "Hello"), 0);
+
+	ft_memmove(unchanged, "XXXXX", 0);
+	check_int("Zero bytes copied",
+		strcmp(unchanged, "Hello"), 0);
+
+	ft_memmove(bytes + 1, bytes, 3);
+	check_int("Embedded null, first byte", bytes[1], 'A');
+	check_int("Embedded null, second byte", bytes[2], '\0');
+	check_int("Embedded null, third byte", bytes[3], 'B');
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -418,6 +456,7 @@ int	main(void)
 	test_memset();
 	test_bzero();
 	test_memcpy();
+	test_memmove();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
