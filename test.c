@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/20 22:37:59 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/21 23:39:19 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -561,6 +561,43 @@ static void	test_strdup(void)
 	}
 }
 
+
+static void	test_substr(void)
+{
+	char	*p;
+	char	original[] = "Hello";
+
+	section("ft_substr");
+	p = ft_substr("Hello World", 6, 5);
+	check_int("Normal substring", p && strcmp(p, "World") == 0, 1);
+	free(p);
+
+	p = ft_substr("Hello", 2, 100);
+	check_int("Length exceeds remaining", p && strcmp(p, "llo") == 0, 1);
+	free(p);
+
+	p = ft_substr("Hello", 10, 3);
+	check_int("Start beyond string", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_substr("Hello", 5, 3);
+	check_int("Start at terminator", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_substr("Hello", 1, 0);
+	check_int("Zero length", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_substr("", 0, 5);
+	check_int("Empty source", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_substr(original, 1, 3);
+	check_int("Expected content", p && strcmp(p, "ell") == 0, 1);
+	check_int("Independent allocation", p && p != original + 1, 1);
+	free(p);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -590,7 +627,8 @@ int	main(void)
 	test_atoi();
 	test_calloc();
 	test_strdup();
-	
+	test_substr();
+
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
 	printf("====================================\n");
