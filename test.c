@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/22 16:12:12 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/22 22:02:58 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -631,6 +631,45 @@ static void	test_strjoin(void)
 	free(p);
 }
 
+static void	test_strtrim(void)
+{
+	char	*p;
+
+	section("ft_strtrim");
+	p = ft_strtrim("***1337***", "*");
+	check_int("Trim both ends", p && strcmp(p, "1337") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("!?Hello?!", "!?");
+	check_int("Multiple trim characters", p && strcmp(p, "Hello") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("xxHelxloxx", "x");
+	check_int("Preserve middle characters",
+		p && strcmp(p, "Helxlo") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("Hello", "x");
+	check_int("Nothing to trim", p && strcmp(p, "Hello") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("xxxx", "x");
+	check_int("Everything trimmed", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("", "x");
+	check_int("Empty source", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("Hello", "");
+	check_int("Empty set", p && strcmp(p, "Hello") == 0, 1);
+	free(p);
+
+	p = ft_strtrim("  Hello  ", " ");
+	check_int("Trim spaces", p && strcmp(p, "Hello") == 0, 1);
+	free(p);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -662,6 +701,7 @@ int	main(void)
 	test_strdup();
 	test_substr();
 	test_strjoin();
+	test_strtrim();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
