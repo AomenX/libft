@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/21 23:39:19 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/22 16:12:12 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -598,6 +598,39 @@ static void	test_substr(void)
 	free(p);
 }
 
+static void	test_strjoin(void)
+{
+	char	*p;
+	char	s1[] = "Hello";
+
+	section("ft_strjoin");
+	p = ft_strjoin("Hello ", "World");
+	check_int("Normal join", p && strcmp(p, "Hello World") == 0, 1);
+	free(p);
+
+	p = ft_strjoin("", "World");
+	check_int("Empty first string", p && strcmp(p, "World") == 0, 1);
+	free(p);
+
+	p = ft_strjoin("Hello", "");
+	check_int("Empty second string", p && strcmp(p, "Hello") == 0, 1);
+	free(p);
+
+	p = ft_strjoin("", "");
+	check_int("Both strings empty", p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_strjoin(s1, " World");
+	check_int("Independent allocation", p && p != s1, 1);
+	if (p)
+	{
+		s1[0] = 'X';
+		check_int("Copy unchanged after source modification",
+			strcmp(p, "Hello World"), 0);
+	}
+	free(p);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -628,6 +661,7 @@ int	main(void)
 	test_calloc();
 	test_strdup();
 	test_substr();
+	test_strjoin();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
