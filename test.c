@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/22 22:02:58 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/23 00:01:42 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,21 @@ static void	check_ptr(const char *name, const void *actual,
 			name, expected, actual);
 		g_failed++;
 	}
+}
+
+static void	free_split(char **words)
+{
+	size_t	i;
+
+	if (!words)
+		return ;
+	i = 0;
+	while (words[i])
+	{
+		free(words[i]);
+		i++;
+	}
+	free(words);
 }
 
 static void	section(const char *name)
@@ -670,6 +685,63 @@ static void	test_strtrim(void)
 	free(p);
 }
 
+static void	test_split(void)
+{
+	char	**w;
+
+	section("ft_split");
+
+	w = ft_split("Hello,World,1337", ',');
+	check_int("Normal split", w && w[0] && w[1] && w[2]
+		&& !strcmp(w[0], "Hello") && !strcmp(w[1], "World")
+		&& !strcmp(w[2], "1337") && w[3] == NULL, 1);
+	free_split(w);
+
+	w = ft_split(",,Hello,,World,,", ',');
+	check_int("Consecutive delimiters", w && w[0] && w[1]
+		&& !strcmp(w[0], "Hello") && !strcmp(w[1], "World")
+		&& w[2] == NULL, 1);
+	free_split(w);
+
+	w = ft_split("", ',');
+	check_int("Empty string", w && w[0] == NULL, 1);
+	free_split(w);
+
+	w = ft_split(",,,,", ',');
+	check_int("Only delimiters", w && w[0] == NULL, 1);
+	free_split(w);
+
+	w = ft_split("Hello", ',');
+	check_int("No delimiter", w && w[0]
+		&& !strcmp(w[0], "Hello") && w[1] == NULL, 1);
+	free_split(w);
+
+	w = ft_split("a b c", ' ');
+	check_int("Split by spaces", w && w[0] && w[1] && w[2]
+		&& !strcmp(w[0], "a") && !strcmp(w[1], "b")
+		&& !strcmp(w[2], "c") && w[3] == NULL, 1);
+	free_split(w);
+
+	w = ft_split("abc", '\0');
+	check_int("Null delimiter", w && w[0]
+		&& !strcmp(w[0], "abc") && w[1] == NULL, 1);
+	free_split(w);
+
+	w = ft_split(",a,", ',');
+	check_int("Leading and trailing delimiters", w && w[0]
+		&& !strcmp(w[0], "a") && w[1] == NULL, 1);
+	free_split(w);
+
+	w = ft_split("x", 'x');
+	check_int("Single delimiter", w && w[0] == NULL, 1);
+	free_split(w);
+
+	w = ft_split("x", ',');
+	check_int("Single character word", w && w[0]
+		&& !strcmp(w[0], "x") && w[1] == NULL, 1);
+	free_split(w);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -702,6 +774,7 @@ int	main(void)
 	test_substr();
 	test_strjoin();
 	test_strtrim();
+	test_split();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
