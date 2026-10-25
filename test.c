@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 15:34:12 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/25 17:00:16 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,24 @@ static void	test_itoa_case(char *label, int n, char *expected)
 	p = ft_itoa(n);
 	check_int(label, p && strcmp(p, expected) == 0, 1);
 	free(p);
+}
+
+static void	test_putchar_case(char *label, char c)
+{
+	int		fd[2];
+	char	result;
+	ssize_t	n;
+
+	if (pipe(fd) == -1)
+	{
+		check_int(label, 0, 1);
+		return ;
+	}
+	ft_putchar_fd(c, fd[1]);
+	close(fd[1]);
+	n = read(fd[0], &result, 1);
+	close(fd[0]);
+	check_int(label, n == 1 && result == c, 1);
 }
 
 static void	section(const char *name)
@@ -830,6 +848,18 @@ static void	iter_index(unsigned int i, char *c)
 		*c = '*';
 }
 
+static void	test_putchar_fd(void)
+{
+	section("ft_putchar_fd");
+	test_putchar_case("Uppercase A", 'A');
+	test_putchar_case("Lowercase z", 'z');
+	test_putchar_case("Digit 5", '5');
+	test_putchar_case("Space", ' ');
+	test_putchar_case("Newline", '\n');
+	test_putchar_case("Null byte", '\0');
+	test_putchar_case("High byte", (char)255);
+}
+
 static void	test_striteri(void)
 {
 	char	s1[] = "hello";
@@ -884,6 +914,7 @@ int	main(void)
 	test_itoa();
 	test_strmapi();
 	test_striteri();
+	test_putchar_fd();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
