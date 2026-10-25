@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 09:28:21 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/25 15:19:50 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -764,6 +764,59 @@ static void	test_itoa(void)
 	test_itoa_case("INT_MIN", (-2147483647 - 1), "-2147483648");
 }
 
+
+static char	map_upper(unsigned int i, char c)
+{
+	(void)i;
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
+}
+
+static char	map_alternate(unsigned int i, char c)
+{
+	if (i % 2 == 0 && c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
+}
+
+static char	map_identity(unsigned int i, char c)
+{
+	(void)i;
+	return (c);
+}
+
+static void	test_strmapi(void)
+{
+	char	*p;
+	char	original[] = "hello";
+
+	section("ft_strmapi");
+	p = ft_strmapi(original, map_upper);
+	check_int("Uppercase transform",
+		p && strcmp(p, "HELLO") == 0, 1);
+	check_int("Original unchanged", strcmp(original, "hello"), 0);
+	free(p);
+
+	p = ft_strmapi("hello", map_alternate);
+	check_int("Index-dependent transform",
+		p && strcmp(p, "HeLlO") == 0, 1);
+	free(p);
+
+	p = ft_strmapi("", map_identity);
+	check_int("Empty string",
+		p && strcmp(p, "") == 0, 1);
+	free(p);
+
+	p = ft_strmapi("123", map_identity);
+	check_int("Identity transform",
+		p && strcmp(p, "123") == 0, 1);
+	free(p);
+
+	check_ptr("NULL callback", ft_strmapi("abc", NULL), NULL);
+	check_ptr("NULL source", ft_strmapi(NULL, map_upper), NULL);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -798,6 +851,8 @@ int	main(void)
 	test_strtrim();
 	test_split();
 	test_itoa();
+	test_strmapi();
+
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
 	printf("====================================\n");
