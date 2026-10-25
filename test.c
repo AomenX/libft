@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 17:08:09 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/25 17:20:20 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,27 @@ static void	test_putstr_case(char *label, char *s, char *expected)
 		return ;
 	}
 	ft_putstr_fd(s, fd[1]);
+	close(fd[1]);
+	len = strlen(expected);
+	n = read(fd[0], buffer, sizeof(buffer));
+	close(fd[0]);
+	check_int(label, n == (ssize_t)len
+		&& memcmp(buffer, expected, len) == 0, 1);
+}
+
+static void	test_putendl_case(char *label, char *s, char *expected)
+{
+	int		fd[2];
+	char	buffer[128];
+	ssize_t	n;
+	size_t	len;
+
+	if (pipe(fd) == -1)
+	{
+		check_int(label, 0, 1);
+		return ;
+	}
+	ft_putendl_fd(s, fd[1]);
 	close(fd[1]);
 	len = strlen(expected);
 	n = read(fd[0], buffer, sizeof(buffer));
@@ -910,6 +931,17 @@ static void	test_putstr_fd(void)
 	test_putstr_case("Special characters", "!@#$%^&*", "!@#$%^&*");
 }
 
+static void	test_putendl_fd(void)
+{
+	section("ft_putendl_fd");
+	test_putendl_case("Normal string", "Hello", "Hello\n");
+	test_putendl_case("Empty string", "", "\n");
+	test_putendl_case("Numbers", "1337", "1337\n");
+	test_putendl_case("Spaces", "Hello World", "Hello World\n");
+	test_putendl_case("Existing newline", "Hello\n", "Hello\n\n");
+	test_putendl_case("Special characters", "!@#", "!@#\n");
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -948,6 +980,7 @@ int	main(void)
 	test_striteri();
 	test_putchar_fd();
 	test_putstr_fd();
+	test_putendl_fd();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
