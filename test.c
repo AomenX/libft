@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/23 00:01:42 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/25 09:28:21 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ static void	free_split(char **words)
 		i++;
 	}
 	free(words);
+}
+
+static void	test_itoa_case(char *label, int n, char *expected)
+{
+	char	*p;
+
+	p = ft_itoa(n);
+	check_int(label, p && strcmp(p, expected) == 0, 1);
+	free(p);
 }
 
 static void	section(const char *name)
@@ -742,6 +751,19 @@ static void	test_split(void)
 	free_split(w);
 }
 
+static void	test_itoa(void)
+{
+	section("ft_itoa");
+	test_itoa_case("Zero", 0, "0");
+	test_itoa_case("Positive single digit", 7, "7");
+	test_itoa_case("Negative single digit", -7, "-7");
+	test_itoa_case("Positive number", 1234, "1234");
+	test_itoa_case("Negative number", -1234, "-1234");
+	test_itoa_case("Multiple zeros", 100200, "100200");
+	test_itoa_case("INT_MAX", 2147483647, "2147483647");
+	test_itoa_case("INT_MIN", (-2147483647 - 1), "-2147483648");
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -775,7 +797,7 @@ int	main(void)
 	test_strjoin();
 	test_strtrim();
 	test_split();
-
+	test_itoa();
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
 	printf("====================================\n");
