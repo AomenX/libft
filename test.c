@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 15:19:50 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/25 15:34:12 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -817,6 +817,37 @@ static void	test_strmapi(void)
 	check_ptr("NULL source", ft_strmapi(NULL, map_upper), NULL);
 }
 
+static void	iter_upper(unsigned int i, char *c)
+{
+	(void)i;
+	if (*c >= 'a' && *c <= 'z')
+		*c -= 32;
+}
+
+static void	iter_index(unsigned int i, char *c)
+{
+	if (i % 2 == 0)
+		*c = '*';
+}
+
+static void	test_striteri(void)
+{
+	char	s1[] = "hello";
+	char	s2[] = "abcdef";
+	char	empty[] = "";
+
+	section("ft_striteri");
+	ft_striteri(s1, iter_upper);
+	check_int("Uppercase in place", strcmp(s1, "HELLO"), 0);
+	ft_striteri(s2, iter_index);
+	check_int("Index-based modification",
+		strcmp(s2, "*b*d*f"), 0);
+	ft_striteri(empty, iter_upper);
+	check_int("Empty string", strcmp(empty, ""), 0);
+	ft_striteri(NULL, iter_upper);
+	ft_striteri(s1, NULL);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -852,6 +883,7 @@ int	main(void)
 	test_split();
 	test_itoa();
 	test_strmapi();
+	test_striteri();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
