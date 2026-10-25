@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 17:20:20 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/25 20:19:59 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,27 @@ static void	test_putendl_case(char *label, char *s, char *expected)
 		return ;
 	}
 	ft_putendl_fd(s, fd[1]);
+	close(fd[1]);
+	len = strlen(expected);
+	n = read(fd[0], buffer, sizeof(buffer));
+	close(fd[0]);
+	check_int(label, n == (ssize_t)len
+		&& memcmp(buffer, expected, len) == 0, 1);
+}
+
+static void	test_putnbr_case(char *label, int value, char *expected)
+{
+	int		fd[2];
+	char	buffer[64];
+	ssize_t	n;
+	size_t	len;
+
+	if (pipe(fd) == -1)
+	{
+		check_int(label, 0, 1);
+		return ;
+	}
+	ft_putnbr_fd(value, fd[1]);
 	close(fd[1]);
 	len = strlen(expected);
 	n = read(fd[0], buffer, sizeof(buffer));
@@ -942,6 +963,19 @@ static void	test_putendl_fd(void)
 	test_putendl_case("Special characters", "!@#", "!@#\n");
 }
 
+static void	test_putnbr_fd(void)
+{
+	section("ft_putnbr_fd");
+	test_putnbr_case("Zero", 0, "0");
+	test_putnbr_case("Positive single digit", 7, "7");
+	test_putnbr_case("Negative single digit", -7, "-7");
+	test_putnbr_case("Positive number", 1337, "1337");
+	test_putnbr_case("Negative number", -42, "-42");
+	test_putnbr_case("Multiple zeros", 100200, "100200");
+	test_putnbr_case("INT_MAX", 2147483647, "2147483647");
+	test_putnbr_case("INT_MIN", (-2147483647 - 1), "-2147483648");
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -981,6 +1015,7 @@ int	main(void)
 	test_putchar_fd();
 	test_putstr_fd();
 	test_putendl_fd();
+	test_putnbr_fd();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
