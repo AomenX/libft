@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 20:19:59 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/26 10:52:48 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -976,6 +976,32 @@ static void	test_putnbr_fd(void)
 	test_putnbr_case("INT_MIN", (-2147483647 - 1), "-2147483648");
 }
 
+static void	test_lstnew(void)
+{
+	t_list	*node;
+	int		number;
+
+	section("ft_lstnew");
+	number = 42;
+	node = ft_lstnew(&number);
+	check_int("Node allocation", node != NULL, 1);
+	if (node)
+	{
+		check_ptr("Content pointer", node->content, &number);
+		check_ptr("Next is NULL", node->next, NULL);
+		check_int("Content value", *(int *)node->content, 42);
+		free(node);
+	}
+	node = ft_lstnew(NULL);
+	check_int("NULL content accepted", node != NULL, 1);
+	if (node)
+	{
+		check_ptr("NULL content stored", node->content, NULL);
+		check_ptr("Next initialized", node->next, NULL);
+		free(node);
+	}
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1016,7 +1042,7 @@ int	main(void)
 	test_putstr_fd();
 	test_putendl_fd();
 	test_putnbr_fd();
-
+	test_lstnew();
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
 	printf("====================================\n");
