@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/27 21:12:07 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/27 23:51:24 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1117,6 +1117,28 @@ static void	test_lstadd_back(void)
 	free(a);
 }
 
+static void	test_lstdelone(void)
+{
+	t_list	*node;
+	char	*content;
+
+	section("ft_lstdelone");
+	content = ft_strdup("Hello");
+	if (!content)
+		return ;
+	node = ft_lstnew(content);
+	if (!node)
+	{
+		free(content);
+		return ;
+	}
+	check_ptr("Content assigned", node->content, content);
+	ft_lstdelone(node, free);
+	check_int("Node deletion completed", 1, 1);
+	ft_lstdelone(NULL, free);
+	check_int("NULL node handled", 1, 1);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1162,6 +1184,7 @@ int	main(void)
 	test_lstsize();
 	test_lstlast();
 	test_lstadd_back();
+	test_lstdelone();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
