@@ -6,19 +6,28 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/25 20:16:54 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/25 20:17:42 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/27 23:19:09 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+static void	put_number(long n, int fd)
+{
+	if (n >= 10)
+		put_number(n / 10, fd);
+	ft_putchar_fd((n % 10) + '0', fd);
+}
+
 void	ft_putnbr_fd(int n, int fd)
 {
-	char	*s;
+	long	num;
 
-	s = ft_itoa(n);
-	if (!s)
-		return ;
-	ft_putstr_fd(s, fd);
-	free(s);
+	num = n;
+	if (num < 0)
+	{
+		ft_putchar_fd('-', fd);
+		num = -num;
+	}
+	put_number(num, fd);
 }
