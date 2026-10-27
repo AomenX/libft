@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/26 10:52:48 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/27 19:01:17 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1002,6 +1002,30 @@ static void	test_lstnew(void)
 	}
 }
 
+static void	test_lstadd_front(void)
+{
+	t_list	*head;
+	t_list	*first;
+	t_list	*second;
+
+	section("ft_lstadd_front");
+	first = ft_lstnew("A");
+	second = ft_lstnew("B");
+	if (!first || !second)
+	{
+		free(first);
+		free(second);
+		return ;
+	}
+	head = first;
+	ft_lstadd_front(&head, second);
+	check_ptr("Head is B", head, second);
+	check_ptr("B points to A", head->next, first);
+	check_ptr("A points to NULL", first->next, NULL);
+	free(second);
+	free(first);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1043,6 +1067,8 @@ int	main(void)
 	test_putendl_fd();
 	test_putnbr_fd();
 	test_lstnew();
+	test_lstadd_front();
+
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
 	printf("====================================\n");
