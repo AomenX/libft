@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/27 20:32:29 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/27 21:12:07 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1082,6 +1082,41 @@ static void	test_lstlast(void)
 	free(head);
 }
 
+
+static void	test_lstadd_back(void)
+{
+	t_list	*head;
+	t_list	*a;
+	t_list	*b;
+	t_list	*c;
+
+	section("ft_lstadd_back");
+	head = NULL;
+	a = ft_lstnew("A");
+	b = ft_lstnew("B");
+	c = ft_lstnew("C");
+	if (!a || !b || !c)
+	{
+		free(a);
+		free(b);
+		free(c);
+		return ;
+	}
+	ft_lstadd_back(&head, a);
+	check_ptr("Empty list: head is A", head, a);
+	check_ptr("A next is NULL", a->next, NULL);
+	ft_lstadd_back(&head, b);
+	check_ptr("Head still A", head, a);
+	check_ptr("A points to B", a->next, b);
+	ft_lstadd_back(&head, c);
+	check_ptr("B points to C", b->next, c);
+	check_ptr("C next is NULL", c->next, NULL);
+	check_int("List size is 3", ft_lstsize(head), 3);
+	free(c);
+	free(b);
+	free(a);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1126,6 +1161,7 @@ int	main(void)
 	test_lstadd_front();
 	test_lstsize();
 	test_lstlast();
+	test_lstadd_back();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
