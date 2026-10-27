@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/27 20:17:58 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/27 20:32:29 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1054,6 +1054,34 @@ static void	test_lstsize(void)
 	free(head);
 }
 
+static void	test_lstlast(void)
+{
+	t_list	*head;
+	t_list	*second;
+	t_list	*third;
+
+	section("ft_lstlast");
+	check_ptr("Empty list", ft_lstlast(NULL), NULL);
+	head = ft_lstnew("A");
+	second = ft_lstnew("B");
+	third = ft_lstnew("C");
+	if (!head || !second || !third)
+	{
+		free(head);
+		free(second);
+		free(third);
+		return ;
+	}
+	check_ptr("One node", ft_lstlast(head), head);
+	head->next = second;
+	check_ptr("Two nodes", ft_lstlast(head), second);
+	second->next = third;
+	check_ptr("Three nodes", ft_lstlast(head), third);
+	free(third);
+	free(second);
+	free(head);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1097,6 +1125,7 @@ int	main(void)
 	test_lstnew();
 	test_lstadd_front();
 	test_lstsize();
+	test_lstlast();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
