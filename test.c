@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/28 02:31:01 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 02:40:37 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1211,6 +1211,52 @@ static void	test_lstclear(void)
 	check_int("Second clear: no additional calls", g_deleted_count, 5);
 }
 
+
+static void	double_value(void *content)
+{
+	int	*n;
+
+	n = (int *)content;
+	*n *= 2;
+}
+
+static void	test_lstiter(void)
+{
+	t_list	*head;
+	t_list	*second;
+	t_list	*third;
+	int		a;
+	int		b;
+	int		c;
+
+	section("ft_lstiter");
+	a = 10;
+	b = 20;
+	c = 30;
+	head = ft_lstnew(&a);
+	second = ft_lstnew(&b);
+	third = ft_lstnew(&c);
+	if (!head || !second || !third)
+	{
+		free(head);
+		free(second);
+		free(third);
+		return ;
+	}
+	ft_lstadd_back(&head, second);
+	ft_lstadd_back(&head, third);
+	ft_lstiter(head, double_value);
+	check_int("First value doubled", a, 20);
+	check_int("Second value doubled", b, 40);
+	check_int("Third value doubled", c, 60);
+	check_int("List size unchanged", ft_lstsize(head), 3);
+	ft_lstiter(NULL, double_value);
+	ft_lstiter(head, NULL);
+	free(third);
+	free(second);
+	free(head);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1258,6 +1304,7 @@ int	main(void)
 	test_lstadd_back();
 	test_lstdelone();
 	test_lstclear();
+	test_lstiter();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
