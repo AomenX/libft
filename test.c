@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/28 02:40:37 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 02:58:01 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1257,6 +1257,65 @@ static void	test_lstiter(void)
 	free(head);
 }
 
+
+static void	*map_double(void *content)
+{
+	int	*result;
+
+	result = malloc(sizeof(int));
+	if (!result)
+		return (NULL);
+	*result = *(int *)content * 2;
+	return (result);
+}
+
+static void	test_lstmap(void)
+{
+	int		a;
+	int		b;
+	int		c;
+	t_list	*original;
+	t_list	*second;
+	t_list	*third;
+	t_list	*mapped;
+
+	section("ft_lstmap");
+	a = 10;
+	b = 20;
+	c = 30;
+	original = ft_lstnew(&a);
+	second = ft_lstnew(&b);
+	third = ft_lstnew(&c);
+	if (!original || !second || !third)
+	{
+		free(original);
+		free(second);
+		free(third);
+		return ;
+	}
+	ft_lstadd_back(&original, second);
+	ft_lstadd_back(&original, third);
+	mapped = ft_lstmap(original, map_double, free);
+	check_int("Mapped list allocated", mapped != NULL, 1);
+	if (mapped)
+	{
+		check_int("Mapped size", ft_lstsize(mapped), 3);
+		check_int("First mapped value",
+			*(int *)mapped->content, 20);
+		check_int("Second mapped value",
+			*(int *)mapped->next->content, 40);
+		check_int("Third mapped value",
+			*(int *)mapped->next->next->content, 60);
+		check_int("Original unchanged", a == 10 && b == 20
+			&& c == 30, 1);
+		check_int("Separate first node", mapped != original, 1);
+		ft_lstclear(&mapped, free);
+		check_ptr("Mapped list cleared", mapped, NULL);
+	}
+	ft_lstclear(&original, NULL);
+	/* Contents are stack integers: free only the nodes. */
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1305,6 +1364,7 @@ int	main(void)
 	test_lstdelone();
 	test_lstclear();
 	test_lstiter();
+	test_lstmap();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
