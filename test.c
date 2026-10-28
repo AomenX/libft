@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/16 22:07:40 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/27 23:51:24 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 02:31:01 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 static int	g_passed = 0;
 static int	g_failed = 0;
+static int	g_deleted_count = 0;
 
 static void	check_int(const char *name, int actual, int expected)
 {
@@ -1139,6 +1140,77 @@ static void	test_lstdelone(void)
 	check_int("NULL node handled", 1, 1);
 }
 
+static void	count_and_free(void *content)
+{
+	g_deleted_count++;
+	free(content);
+}
+
+static void	test_lstclear(void)
+{
+	t_list	*head;
+	t_list	*node;
+	int		i;
+
+	section("ft_lstclear");
+
+	/* Test 1: Empty list */
+	head = NULL;
+	g_deleted_count = 0;
+	ft_lstclear(&head, count_and_free);
+	check_ptr("Empty list stays NULL", head, NULL);
+	check_int("No callback for empty list", g_deleted_count, 0);
+
+	/* Test 2: NULL list pointer */
+	ft_lstclear(NULL, count_and_free);
+	check_int("NULL list handled", 1, 1);
+
+	/* Test 3: Single node */
+	head = ft_lstnew(ft_strdup("Hello"));
+	g_deleted_count = 0;
+	if (head && head->content)
+	{
+		ft_lstclear(&head, count_and_free);
+		check_ptr("Single node: head is NULL", head, NULL);
+		check_int("Single node: callback count", g_deleted_count, 1);
+	}
+	else if (head)
+	{
+		free(head->content);
+		free(head);
+	}
+
+	/* Test 4: Multiple nodes */
+	head = NULL;
+	i = 0;
+	while (i < 5)
+	{
+		node = ft_lstnew(ft_strdup("1337"));
+		if (!node || !node->content)
+		{
+			if (node)
+			{
+				free(node->content);
+				free(node);
+			}
+			ft_lstclear(&head, free);
+			return ;
+		}
+		ft_lstadd_back(&head, node);
+		i++;
+	}
+	check_int("List contains 5 nodes", ft_lstsize(head), 5);
+	g_deleted_count = 0;
+	ft_lstclear(&head, count_and_free);
+	check_ptr("Multiple nodes: head is NULL", head, NULL);
+	check_int("Multiple nodes: callback count", g_deleted_count, 5);
+
+	/* Test 5: Clear already cleared list */
+	ft_lstclear(&head, count_and_free);
+	check_ptr("Second clear: head is NULL", head, NULL);
+	check_int("Second clear: no additional calls", g_deleted_count, 5);
+}
+
 int	main(void)
 {
 	printf("====================================\n");
@@ -1185,6 +1257,7 @@ int	main(void)
 	test_lstlast();
 	test_lstadd_back();
 	test_lstdelone();
+	test_lstclear();
 
 	printf("\n====================================\n");
 	printf("RESULTS: %d passed, %d failed\n", g_passed, g_failed);
