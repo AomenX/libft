@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 00:33:56 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/23 14:34:09 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 03:09:18 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	t_bytes;
 	char	*p;
 
+	if (!s1 || !s2)
+    	return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	t_bytes = len1 + len2 + 1;
