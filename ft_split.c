@@ -6,11 +6,9 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 23:11:25 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/23 00:00:25 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 18:48:30 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 #include "libft.h"
 
@@ -77,6 +75,8 @@ char	**ft_split(char const *s, char c)
 {
 	char	**words;
 
+	if (!s)
+		return (NULL);
 	words = malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!words)
 		return (NULL);
