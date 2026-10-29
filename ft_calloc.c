@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 19:10:23 by marvin            #+#    #+#             */
-/*   Updated: 2026/10/23 14:25:15 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 18:56:45 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	size_t	total;
 	void	*ptr;
 
+	if (nmemb == 0 || size == 0)
+		return (malloc(1));
 	if (size && nmemb > (size_t)-1 / size)
 		return (NULL);
 	total = nmemb * size;
