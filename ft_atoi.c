@@ -6,7 +6,7 @@
 /*   By: ammomen <ammomen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 17:28:49 by ammomen           #+#    #+#             */
-/*   Updated: 2026/10/20 17:46:02 by ammomen          ###   ########.fr       */
+/*   Updated: 2026/10/28 18:47:18 by ammomen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int	i;
-	int	s;
-	int	r;
+	int		i;
+	int		s;
+	long	r;
 
 	i = 0;
 	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
@@ -34,5 +34,5 @@ int	ft_atoi(const char *nptr)
 		r = r * 10 + (nptr[i] - '0');
 		i++;
 	}
-	return (r * s);
+	return ((int)(r * s));
 }
